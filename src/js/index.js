@@ -2,6 +2,7 @@ require("@babel/polyfill");
 import Search from './model/search';
 import { elements, renderLoader,clearLoader } from './view/base';
 import * as searchView from './view/searchView';
+import Recipe  from './model/recipe';
 
 /**
  * webb app in tuluv 
@@ -42,3 +43,15 @@ elements.searchFrom.addEventListener('submit', e => {
     controlSearch();
 } );
 
+elements.searchButton.addEventListener('click', e => {
+    const btn = e.target.closest('.btn-inline');
+    if(btn){
+        const goto = parseInt(btn.dataset.goto,10);
+        searchView.clearSearchResult();
+        searchView.renderRecipes(state.search.result,goto)
+    }
+} );
+
+const r = new Recipe(47746)
+
+r.getRecipe();
