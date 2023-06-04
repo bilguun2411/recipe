@@ -13,6 +13,16 @@ export default class Recipe {
         this.image_url = result.data.recipe.image_url
         this.publisher_url = result.data.recipe.publisher_url
         this.social_rank = result.data.recipe.social_rank
-        console.log(result.data.recipe.ingredients)
-    }
+        this.title = result.data.recipe.title
+        // console.log(this.image_url)
+    };
+
+    calcTime(){
+        //nairlaga burt 5 min
+        this.time = this.ingredients.length * 5;
+    };
+
+    calcQty(){
+        this.huniiToo = 4;
+    };
 }

@@ -1,12 +1,14 @@
 import { create } from 'lodash';
 import { elements } from './base.js'
 
+
+
 //Private 
 const renderRecipe = recipe =>{
     //console.log(recipe.title);
     const markup = `
     <li>
-                    <a class="results__link results__link" href=${recipe.recipe_id}>
+                    <a class="results__link results__link" href=#${recipe.recipe_id}>
                         <figure class="results__fig">
                             <img src=${recipe.image_url} alt="Test">
                         </figure>

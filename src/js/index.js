@@ -3,6 +3,9 @@ import Search from './model/search';
 import { elements, renderLoader,clearLoader } from './view/base';
 import * as searchView from './view/searchView';
 import Recipe  from './model/recipe';
+import {clearRecipe,renderRecipe,highlightsSelectedRecipe } from './view/recipeView';
+import List from './model/list';
+import * as listView from './view/listView';
 
 /**
  * webb app in tuluv 
@@ -32,6 +35,7 @@ const controlSearch = async () => {
        
         // 5) Хайлтын үр дүнг дэлгэцэнд үзүүлнэ.
         clearLoader();
+        
         if(state.search.result === undefined ) alert("bhgui")
         else searchView.renderRecipes(state.search.result);
         //console.log(state.search.result);
@@ -52,6 +56,49 @@ elements.searchButton.addEventListener('click', e => {
     }
 } );
 
-const r = new Recipe(47746)
 
-r.getRecipe();
+///joriin controller 
+
+///hash g barij uguh 
+const controlRecipe = async () => {
+    //1.url s id g salgaj avna
+    const id = window.location.hash.replace("#","");
+    if(id){
+         // console.log(id);
+
+        //2.joriin model g uusgej ugnu
+        state.recipe= new Recipe(id)
+        //3.UI delgeteiig betlgene
+        clearRecipe();
+        renderLoader(elements.recipeDiv);
+        highlightsSelectedRecipe(id);
+        //4joriig tataj avch irne
+        await state.recipe.getRecipe();
+        //5.jor guitseh hugatsaa bolon orts tootsno 
+        clearLoader();
+        state.recipe.calcTime();
+        state.recipe.calcQty();
+        //6.joroo uzuulne
+        renderRecipe(state.recipe);
+    }
+   
+};
+
+['hashchange','load'].forEach(event => window.addEventListener(event,controlRecipe));
+
+const controlList = () =>{
+    //nairlagin moedul uusgene
+    state.list = new List();
+    listView.clearList();
+    //ug model ruu odo haragdaj bgaad jorno buh 
+    state.recipe.ingredients.forEach(n => {
+        state.list.addItem(n);
+        listView.renderItem(n);
+    });
+};
+
+elements.recipeDiv.addEventListener('click', e =>{
+    if(e.target.matches('.recipe__btn, .recipe__btn *')){
+        controlList();
+    }
+})
