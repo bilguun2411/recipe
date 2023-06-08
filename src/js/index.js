@@ -19,7 +19,7 @@ import * as likesView from './view/likesView';
 
 const state = {};
 //like tses g haaah
-likesView.toggleLikeMenu(0);
+
 
 
 const controlSearch = async () => {
@@ -68,7 +68,8 @@ elements.searchButton.addEventListener('click', e => {
 const controlRecipe = async () => {
     //1.url s id g salgaj avna
     const id = window.location.hash.replace("#","");
-    if(!state.likes) state.likes = new Likes();
+    //eniig load ruu shiljuulsen
+    if(!state.likes) state.likes = new Likes();  
     if(id){
          // console.log(id);
 
@@ -91,6 +92,15 @@ const controlRecipe = async () => {
 };
 
 ['hashchange','load'].forEach(event => window.addEventListener(event,controlRecipe));
+
+window.addEventListener('load', e=> {
+    //shineer page achaalagdahad uusne
+    if(!state.likes) state.likes = new Likes();
+    // //like tses garah esehiig haruu
+    likesView.toggleLikeMenu(state.likes.getNumberOfLikes());
+    // // //like uud bval tses nd haruulah
+    state.likes.likes.forEach(like => likesView.renderLikes(like));
+})
 
 const controlList = () =>{
     //nairlagin moedul uusgene
@@ -115,7 +125,7 @@ const controlLike = () =>{
     //2. odoo bga jor iin Id g olj avah
     const currentRecipeId = state.recipe.id;
     //3. like lsan esehiig shalgah
-    if( state.likes.isLiked(currentRecipeId)){
+    if( state.likes.isLiked(currentRecipeId)) {
         //4.1 like g ni boliulna
         state.likes.deleteLike(currentRecipeId);
         //likeslan baidliig boliulah
